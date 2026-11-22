@@ -1,11 +1,12 @@
 {
-	"name": "clorb",
-	"version": "0.0.7",
+	"name": "@peterbe/clorb",
+	"version": "0.0.8",
 	"description": "A CLI tool for cloning Orbstack VMs by git branches",
 	"keywords": [
 		"cli",
-		"datetime",
-		"timezones"
+		"orb",
+		"orbctl",
+		"orbstack"
 	],
 	"bugs": {
 		"url": "https://github.com/peterbe/clorb/issues"
