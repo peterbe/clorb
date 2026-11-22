@@ -1,0 +1,50 @@
+{
+	"name": "clorb",
+	"version": "0.0.7",
+	"description": "A CLI tool for cloning Orbstack VMs by git branches",
+	"keywords": [
+		"cli",
+		"datetime",
+		"timezones"
+	],
+	"bugs": {
+		"url": "https://github.com/peterbe/clorb/issues"
+	},
+	"license": "MIT",
+	"author": "Peter Bengtsson",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/peterbe/clorb"
+	},
+	"bin": {
+		"clorb": "src/index.ts"
+	},
+	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"format": "bun fmt",
+		"lint:check": "bun fmt --check",
+		"prepare": "husky",
+		"build": "bun build src/index.ts --target=bun --outfile out/clorb --compile --bytecode",
+		"build:watch": "bun build --watch src/index.ts --target=bun --outfile out/clorb --compile --bytecode",
+		"build:linux-arm64": "bun build src/index.ts --target=bun-linux-arm64 --outfile out/clorb-linux-arm64 --compile --bytecode",
+		"build:linux-x64": "bun build src/index.ts --target=bun-linux-x64 --outfile out/clorb-linux-x64 --compile --bytecode",
+		"release": "np --yolo"
+	},
+	"dependencies": {
+		"@inquirer/prompts": "^8.7.3",
+		"commander": "^15.0.0",
+		"date-fns": "^4.4.0",
+		"ora": "^10.0.0"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"husky": "^9.1.7",
+		"np": "^12.1.1"
+	},
+	"peerDependencies": {
+		"typescript": "^7"
+	}
+}
