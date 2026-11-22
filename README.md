@@ -96,3 +96,10 @@ And to run the unit tests continuously as you save changes use:
 ```sh
 just test-watch
 ```
+
+Code formatting should be automatic with a git pre-commit hook. But you
+can also run:
+
+```sh
+just format
+```
