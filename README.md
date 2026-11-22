@@ -2,6 +2,19 @@
 
 Clone orbs smartly by git branches
 
+Example use:
+
+```text
+➜ clorb my-cool-branch
+```
+
+This will clone the current **default orb** and create a new one
+called `clorb--my-cool-branch`. Now, you can enter that orb by typing:
+
+```text
+orbctl run -m clorb--my-cool-branch
+```
+
 ## Install
 
 Run this in a terminal:
@@ -34,12 +47,6 @@ If you'd rather read the script before running it:
 curl -fsSL https://raw.githubusercontent.com/peterbe/clorb/main/install.sh -o install.sh
 less install.sh
 bash install.sh
-```
-
-Example use:
-
-```text
-➜ clorb my-cool-branch
 ```
 
 ## Other commands
