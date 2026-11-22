@@ -15,6 +15,13 @@ called `clorb--my-cool-branch`. Now, you can enter that orb by typing:
 orbctl run -m clorb--my-cool-branch
 ```
 
+If you don't want it to clone from the **default** orb, you can pass a
+second argument, which orb to clone from. For example:
+
+```text
+➜ clorb some-other-branch clorb--my-cool-branch
+```
+
 ## Install
 
 Run this in a terminal:
