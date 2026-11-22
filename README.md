@@ -82,3 +82,17 @@ and then run, in another terminal:
 ```sh
 ./out/clorb --help
 ```
+
+### Writing tests
+
+At the moment, there aren't many tests. You run the tests with:
+
+```sh
+just test
+```
+
+And to run the unit tests continuously as you save changes use:
+
+```sh
+just test-watch
+```
