@@ -34,8 +34,8 @@
 		"release": "np --yolo"
 	},
 	"dependencies": {
-		"@inquirer/prompts": "^8.7.3",
-		"commander": "^15.0.0",
+		"@inquirer/prompts": "^8.8.0",
+		"commander": "^15.1.0",
 		"date-fns": "^4.4.0",
 		"ora": "^10.0.0"
 	},
