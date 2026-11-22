@@ -148,7 +148,6 @@ export async function interactiveInput(message: string): Promise<string> {
 }
 
 export async function cloneOrb(source: string, destination: string, debug = false): Promise<void> {
-	console.log(["orbctl", "clone", source, destination].join(" "));
 	const { exitCode, stdout, stderr } = await run(["orbctl", "clone", source, destination]);
 	if (exitCode !== 0) {
 		throw new Error(`Failed to clone orb: ${stderr}`);
