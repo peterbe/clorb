@@ -2,6 +2,40 @@
 
 Clone orbs smartly by git branches
 
+## Install
+
+Run this in a terminal:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/peterbe/clorb/main/install.sh | bash
+```
+
+The [`install.sh`](install.sh) script:
+
+1. Figures out your operating system and CPU architecture (e.g. macOS on
+   Apple Silicon → `clorb-darwin-arm64`, Linux on Intel/AMD → `clorb-linux-x64`).
+2. Looks up the latest version on
+   [GitHub releases](https://github.com/peterbe/clorb/releases).
+3. Downloads the matching binary to `~/bin/clorb` and makes it executable,
+   creating `~/bin/` if it doesn't already exist.
+4. If `~/bin` isn't already on your `$PATH`, appends
+   `export PATH="$HOME/bin:$PATH"` to your shell config (`~/.zshrc`,
+   `~/.bashrc`/`~/.bash_profile`, or `~/.profile`).
+
+New terminals will find `clorb` automatically. In the terminal where you ran
+the installer, run the `source ...` command it prints (or just open a new
+terminal).
+
+To upgrade, run the same command again. To uninstall, delete `~/bin/clorb`.
+
+If you'd rather read the script before running it:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/peterbe/clorb/main/install.sh -o install.sh
+less install.sh
+bash install.sh
+```
+
 Example use:
 
 ```text
