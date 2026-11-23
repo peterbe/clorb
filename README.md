@@ -1,5 +1,9 @@
 # clorb
 
+<p align="center">
+  <img src="docs/clorb-logo.png" alt="clorb logo" style="max-width: 300px">
+</p>
+
 Clone orbs smartly by git branches
 
 Example use:
