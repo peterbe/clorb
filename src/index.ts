@@ -11,13 +11,13 @@ const program = new Command();
 
 program
 	.name("clorb")
-	.description("Clone Orbstack VMs by git branches")
+	.description("Clone Orbstack VMs")
 	.version(version)
 	.option("--debug", "Debug mode (shows traceback)")
-	.argument("[gitbranchname]", "name of the git branch (e.g. peterbe/foo-bar)")
+	.argument("[name]", "name of the new orb (e.g. peterbe/foo-bar)")
 	.argument("[orbname]", "name of the orb to clone from (defaults to your default orb)")
-	.action(async (branchName: string, orbName: string, options: { debug: boolean }) => {
-		wrap(clorb(branchName, orbName), options.debug);
+	.action(async (name: string, orbName: string, options: { debug: boolean }) => {
+		wrap(clorb(name, orbName), options.debug);
 	});
 
 program

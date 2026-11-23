@@ -1,7 +1,7 @@
 {
 	"name": "@peterbe/clorb",
 	"version": "0.0.11",
-	"description": "A CLI tool for cloning Orbstack VMs by git branches",
+	"description": "A CLI tool for cloning Orbstack VMs",
 	"keywords": [
 		"cli",
 		"orb",

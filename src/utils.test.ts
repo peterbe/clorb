@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import { CLORB_PREFIX } from "./constants";
-import { getOrbNameFromBranchName } from "./utils";
+import { getOrbNameFromName } from "./utils";
 
 describe("utils", () => {
 	test.each([
@@ -10,7 +10,7 @@ describe("utils", () => {
 		["Upper:LOWER", "upper-lower"],
 		["spaces in the name", "spaces-in-the-name"],
 	])("generate orb name from branch name %s", async (input, expected) => {
-		const output = await getOrbNameFromBranchName(input);
+		const output = await getOrbNameFromName(input);
 		expect(output).toBe(CLORB_PREFIX + expected);
 	});
 });
