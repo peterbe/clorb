@@ -139,7 +139,7 @@ export async function getOrbNameFromName(
 		.toLowerCase()
 		.replace(/[^a-z0-9-_/]/g, "")
 		.slice(0, maxLength - 6 - prefix.length - 2);
-	return `${prefix}${slug}`; //--${hash}`;
+	return `${prefix}${slug}`;
 }
 
 export async function interactiveInput(message: string): Promise<string> {
