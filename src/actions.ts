@@ -8,14 +8,17 @@ import {
 	deleteOrb,
 	getCurrentOrbs,
 	getDefaultOrbName,
-	getOrbNameFromBranchName,
+	getOrbNameFromName,
 	italic,
 	runOrb,
 	success,
 	warn,
 } from "./utils";
 
-export async function clorb(branchName: string, orbName: string): Promise<void> {
+export async function clorb(name?: string, orbName?: string): Promise<void> {
+	if (name?.startsWith("_")) {
+		throw new Error(`Names starting with '_' are reserved`);
+	}
 	const currentOrbs = await getCurrentOrbs();
 	if (orbName) {
 		if (!currentOrbs[orbName]) {
@@ -24,8 +27,8 @@ export async function clorb(branchName: string, orbName: string): Promise<void> 
 	}
 	const source = orbName || (await getDefaultOrbName());
 
-	const interactiveBranchName = branchName || (await askBranchName());
-	const destination = await getOrbNameFromBranchName(branchName || interactiveBranchName);
+	const interactiveName = name || (await askName());
+	const destination = await getOrbNameFromName(name || interactiveName);
 
 	const currentOrb = currentOrbs[destination];
 	if (currentOrb) {
@@ -50,7 +53,7 @@ export async function clorb(branchName: string, orbName: string): Promise<void> 
 }
 
 async function askToRunOrb(orbName: string): Promise<void> {
-	if (await askBoolean(`Do you want to run the orb ${bold(orbName)} now?`)) {
+	if (await askBoolean(`Do you want to run the orb ${italic(orbName)} now?`)) {
 		await runOrb(orbName);
 	}
 }
@@ -62,11 +65,14 @@ export async function askBoolean(message: string, defaultValue = true): Promise<
 	});
 }
 
-async function askBranchName(): Promise<string> {
-	const branchName = await input({
-		message: "Enter the git branch name:",
+async function askName(): Promise<string> {
+	const name = await input({
+		message: "Enter the name:",
 	});
-	return branchName.trim();
+	if (name.trim().startsWith("_")) {
+		throw new Error(`Names starting with '_' are reserved`);
+	}
+	return name.trim();
 }
 
 export async function purge() {
@@ -95,6 +101,7 @@ export async function purge() {
 		await deleteOrb(orb);
 	}
 	spinner2.succeed(`Deleted ${toDelete.length} orb${toDelete.length === 1 ? "" : "s"}`);
+	console.log("");
 }
 
 export async function list() {

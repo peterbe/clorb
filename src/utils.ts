@@ -1,31 +1,32 @@
 import { input } from "@inquirer/prompts";
+import kleur from "kleur";
 
 import { CLORB_PREFIX } from "./constants";
 
 export function bold(text: string): string {
-	return `\x1b[1m${text}\x1b[0m`;
+	return kleur.bold(text);
 }
 export function italic(text: string): string {
-	return `\x1b[3m${text}\x1b[0m`;
+	return kleur.italic(text);
 }
 export function grey(text: string): string {
-	return `\x1b[90m${text}\x1b[0m`;
+	return kleur.gray(text);
 }
 export function green(text: string): string {
-	return `\x1b[32m${text}\x1b[0m`;
+	return kleur.green(text);
 }
 export function red(text: string): string {
-	return `\x1b[31m${text}\x1b[0m`;
+	return kleur.red(text);
 }
 export function yellow(text: string): string {
-	return `\x1b[33m${text}\x1b[0m`;
+	return kleur.yellow(text);
 }
 export function error(...args: string[]) {
-	console.error(...args.map((arg) => red(arg)));
+	console.error(...args.map((arg) => kleur.red(arg)));
 }
 
 export function warn(...args: string[]) {
-	console.warn(...args.map((arg) => yellow(arg)));
+	console.warn(...args.map((arg) => kleur.yellow(arg)));
 }
 
 export function success(text: string[] | string): void {
@@ -69,6 +70,7 @@ type Orb = {
 	builtin: boolean;
 	state: string;
 };
+
 export async function getCurrentOrbs(): Promise<Record<string, Orb>> {
 	const { exitCode, stdout, stderr } = await run(["orbctl", "list", "-f", "json"]);
 	if (exitCode !== 0) {
@@ -120,13 +122,13 @@ export async function deleteOrb(orbName: string): Promise<void> {
 	}
 }
 
-export async function getOrbNameFromBranchName(
-	branchName: string,
+export async function getOrbNameFromName(
+	name: string,
 	prefix = CLORB_PREFIX,
 	maxLength = 63,
 ): Promise<string> {
-	if (!branchName) throw new Error("Branch name is required");
-	const slug = branchName
+	if (!name) throw new Error("Name is required");
+	const slug = name
 		.trim()
 		.replace(/\//g, "-")
 		.replace(/\s+/g, "-")
