@@ -4,6 +4,7 @@ import { Command } from "commander";
 
 import { version } from "../package.json";
 import { clorb, list, purge } from "./actions";
+import { upgrade } from "./upgrade";
 import { error } from "./utils";
 
 const program = new Command();
@@ -33,6 +34,14 @@ program
 	.option("--debug", "Debug mode (shows traceback)")
 	.action(async (options: { debug: boolean }) => {
 		wrap(list(), options.debug);
+	});
+
+program
+	.command("_upgrade")
+	.description("Install the latest version of clorb")
+	.option("--debug", "Debug mode (shows traceback)")
+	.action(async (options: { debug: boolean }) => {
+		wrap(upgrade(), options.debug);
 	});
 
 program.parse();
