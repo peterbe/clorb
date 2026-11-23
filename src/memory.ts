@@ -3,19 +3,31 @@ import { sep } from "node:path";
 
 const MEMORY_FILE = "~/.clorbs.json";
 
-export async function rememberClone(name: string, source: string): Promise<void> {
+type Memory = {
+	source: string;
+	date: string;
+	extra?: Record<string, string | number>;
+};
+
+export async function rememberClone(
+	name: string,
+	source: string,
+	extra: Memory["extra"],
+): Promise<void> {
 	const memory = await getMemory();
 	memory[name] = {
 		source,
 		date: new Date().toISOString(),
+		extra,
 	};
 	await saveMemory(memory);
 }
 
-type Memory = {
-	source: string;
-	date: string;
-};
+export async function forgetClone(name: string): Promise<void> {
+	const memory = await getMemory();
+	delete memory[name];
+	await saveMemory(memory);
+}
 
 export async function getMemory(): Promise<Record<string, Memory>> {
 	const file = Bun.file(expandPath(MEMORY_FILE));

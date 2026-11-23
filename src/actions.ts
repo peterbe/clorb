@@ -3,7 +3,7 @@ import { formatDistance } from "date-fns";
 import ora from "ora";
 
 import { CLORB_PREFIX } from "./constants";
-import { getMemory, rememberClone } from "./memory";
+import { forgetClone, getMemory, rememberClone } from "./memory";
 import {
 	bold,
 	cloneOrb,
@@ -46,7 +46,7 @@ export async function clorb(name?: string, orbName?: string): Promise<void> {
 		console.log("");
 		const spinner = ora(`Cloning ${bold(source)} to ${bold(destination)}`).start();
 		await cloneOrb(source, destination);
-		await rememberClone(destination, source);
+		await rememberClone(destination, source, { name: name || interactiveName });
 		spinner.succeed(`Cloned ${bold(source)} to ${bold(destination)}`);
 		await askToRunOrb(destination);
 	}
@@ -110,6 +110,7 @@ export async function purge() {
 	).start();
 	for (const orb of toDelete) {
 		await deleteOrb(orb);
+		await forgetClone(orb);
 	}
 	spinner2.succeed(`Deleted ${toDelete.length} orb${toDelete.length === 1 ? "" : "s"}`);
 	console.log("");
