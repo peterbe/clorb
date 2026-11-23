@@ -1,7 +1,9 @@
 import { confirm, input } from "@inquirer/prompts";
+import { formatDistance } from "date-fns";
 import ora from "ora";
 
 import { CLORB_PREFIX } from "./constants";
+import { getMemory, rememberClone } from "./memory";
 import {
 	bold,
 	cloneOrb,
@@ -9,9 +11,10 @@ import {
 	getCurrentOrbs,
 	getDefaultOrbName,
 	getOrbNameFromName,
+	green,
+	grey,
 	italic,
 	runOrb,
-	success,
 	warn,
 } from "./utils";
 
@@ -39,10 +42,11 @@ export async function clorb(name?: string, orbName?: string): Promise<void> {
 			await askToRunOrb(destination);
 		}
 	} else {
-		success(`Orb '${destination}' does not exist and will be created`);
+		console.log(green(`Orb ${bold(destination)} does not exist and will be created.`));
 		console.log("");
 		const spinner = ora(`Cloning ${bold(source)} to ${bold(destination)}`).start();
 		await cloneOrb(source, destination);
+		await rememberClone(destination, source);
 		spinner.succeed(`Cloned ${bold(source)} to ${bold(destination)}`);
 		await askToRunOrb(destination);
 	}
@@ -85,10 +89,17 @@ export async function purge() {
 	if (clorbs.length === 0) {
 		return;
 	}
+	const memory = await getMemory();
 	const toDelete: string[] = [];
 	for (const orb of clorbs) {
 		if (orbs[orb]) {
-			console.log(`${orb.padEnd(60)} ${orbs[orb].state}`);
+			const metadata = memory[orb];
+			let created = "";
+			if (metadata) {
+				const date = new Date(metadata.date);
+				created = `created ${formatDistance(date, new Date())}`;
+			}
+			console.log(`${orb.padEnd(50)} ${orbs[orb].state.padEnd(10)} ${grey(created)}`);
 			if (await askBoolean(`Do you want to delete the orb ${italic(orb)}?`)) {
 				toDelete.push(orb);
 			}
@@ -106,12 +117,22 @@ export async function purge() {
 
 export async function list() {
 	const orbs = await getCurrentOrbs();
+	const memory = await getMemory();
 	const clorbs = Object.keys(orbs).filter((name) => name.startsWith(CLORB_PREFIX));
 	if (clorbs.length === 0) {
 		console.log("No clorbs found");
 		return;
 	}
 	for (const orb of clorbs) {
-		if (orbs[orb]) console.log(`${orb.padEnd(60)} ${orbs[orb].state}`);
+		if (orbs[orb]) {
+			const state = orbs[orb].state;
+			const metadata = memory[orb];
+			let created = "";
+			if (metadata) {
+				const date = new Date(metadata.date);
+				created = `created ${formatDistance(date, new Date())}`;
+			}
+			console.log(`${orb.padEnd(50)} ${state.padEnd(10)} ${grey(created)}`);
+		}
 	}
 }
