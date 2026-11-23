@@ -26,6 +26,18 @@ second argument, which orb to clone from. For example:
 ➜ clorb some-other-branch clorb--my-cool-branch
 ```
 
+## Features
+
+What this offers beyond `orbctl clone ...` is:
+
+- handles predictable transformations of the names, so you can paste in
+  the name of git branch and it will make sure the name is valid to use
+  in `orbctl`.
+- stores metadata about _when_ the clone was created and what the original
+  input was
+- the `_purge` command is interactive and makes it easy to clean up cloned orbs
+  you haven't used in a long time
+
 ## Install
 
 Run this in a terminal:
