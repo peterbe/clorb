@@ -62,6 +62,12 @@ bash install.sh
 
 ## Other commands
 
+### Install the latest version of clorb (if necessary)
+
+```text
+➜ clorb _upgrade
+```
+
 ### Purge all Orbs created with clorb
 
 ```text
