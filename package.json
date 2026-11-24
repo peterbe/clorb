@@ -28,10 +28,10 @@
 		"format": "bun fmt",
 		"lint:check": "bun fmt --check",
 		"prepare": "husky",
-		"build": "bun build src/index.ts --target=bun --outfile out/clorb --compile --bytecode",
-		"build:watch": "bun build --watch src/index.ts --target=bun --outfile out/clorb --compile --bytecode",
-		"build:linux-arm64": "bun build src/index.ts --target=bun-linux-arm64 --outfile out/clorb-linux-arm64 --compile --bytecode",
-		"build:linux-x64": "bun build src/index.ts --target=bun-linux-x64 --outfile out/clorb-linux-x64 --compile --bytecode",
+		"build": "bun build src/index.ts --target=bun --outfile out/clorb --compile --bytecode --production",
+		"build:watch": "bun build --watch src/index.ts --target=bun --outfile out/clorb --compile --bytecode  --production",
+		"build:linux-arm64": "bun build src/index.ts --target=bun-linux-arm64 --outfile out/clorb-linux-arm64 --compile --bytecode  --production",
+		"build:linux-x64": "bun build src/index.ts --target=bun-linux-x64 --outfile out/clorb-linux-x64 --compile --bytecode  --production",
 		"release": "np --yolo"
 	},
 	"dependencies": {
