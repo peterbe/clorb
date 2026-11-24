@@ -3,7 +3,7 @@ import { sep } from "node:path";
 
 const MEMORY_FILE = "~/.clorbs.json";
 
-type Memory = {
+export type Memory = {
 	source: string;
 	date: string;
 	extra?: Record<string, string | number>;

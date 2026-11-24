@@ -3,17 +3,19 @@ import { formatDistance } from "date-fns";
 import ora from "ora";
 
 import { CLORB_PREFIX } from "./constants";
-import { forgetClone, getMemory, rememberClone } from "./memory";
+import { forgetClone, getMemory, type Memory, rememberClone } from "./memory";
 import {
 	bold,
 	cloneOrb,
 	deleteOrb,
+	formatBytes,
 	getCurrentOrbs,
 	getDefaultOrbName,
 	getOrbNameFromName,
 	green,
 	grey,
 	italic,
+	type Orb,
 	runOrb,
 	warn,
 } from "./utils";
@@ -36,9 +38,9 @@ export async function clorb(name?: string, orbName?: string): Promise<void> {
 	const currentOrb = currentOrbs[destination];
 	if (currentOrb) {
 		warn(`Orb ${bold(destination)} already exists`);
-		console.log(`It is currently ${bold(currentOrb.state)}.`);
+		console.log(`It is currently ${bold(currentOrb.record.state)}.`);
 		console.log("");
-		if (currentOrb.state !== "running") {
+		if (currentOrb.record.state !== "running") {
 			await askToRunOrb(destination);
 		}
 	} else {
@@ -94,12 +96,7 @@ export async function purge() {
 	for (const orb of clorbs) {
 		if (orbs[orb]) {
 			const metadata = memory[orb];
-			let created = "";
-			if (metadata) {
-				const date = new Date(metadata.date);
-				created = `created ${formatDistance(date, new Date())}`;
-			}
-			console.log(`${orb.padEnd(50)} ${orbs[orb].state.padEnd(10)} ${grey(created)}`);
+			prettyPrintOrb(orbs[orb], metadata);
 			if (await askBoolean(`Do you want to delete the orb ${italic(orb)}?`)) {
 				toDelete.push(orb);
 			}
@@ -124,16 +121,25 @@ export async function list() {
 		console.log("No clorbs found");
 		return;
 	}
-	for (const orb of clorbs) {
-		if (orbs[orb]) {
-			const state = orbs[orb].state;
-			const metadata = memory[orb];
-			let created = "";
-			if (metadata) {
-				const date = new Date(metadata.date);
-				created = `created ${formatDistance(date, new Date())}`;
-			}
-			console.log(`${orb.padEnd(50)} ${state.padEnd(10)} ${grey(created)}`);
+	for (const orbName of clorbs) {
+		const orb = orbs[orbName];
+		if (orb) {
+			const metadata = memory[orbName];
+			prettyPrintOrb(orb, metadata);
 		}
 	}
+}
+
+function prettyPrintOrb(orb: Orb, metadata?: Memory) {
+	const state = orb.record.state;
+	let created = "";
+	if (metadata) {
+		const date = new Date(metadata.date);
+		created = `created ${formatDistance(date, new Date())}`;
+	}
+	let size = "";
+	if (orb.disk_size) {
+		size = `(${formatBytes(orb.disk_size)})`;
+	}
+	console.log(`${orb.record.name.padEnd(50)} ${state.padEnd(10)} ${grey(created)} ${grey(size)}`);
 }

@@ -45,7 +45,7 @@ export async function runSshCommand(orbName: string, command: string): ReturnTyp
 	return await run(["ssh", `${orbName}@orb`, command]);
 }
 
-type Orb = {
+type OrbRecord = {
 	id: string;
 	name: string;
 	image: {
@@ -71,15 +71,28 @@ type Orb = {
 	state: string;
 };
 
+export type Orb = {
+	record: OrbRecord;
+	disk_size: number;
+	ip4: string;
+	ip6: string;
+};
+
 export async function getCurrentOrbs(): Promise<Record<string, Orb>> {
 	const { exitCode, stdout, stderr } = await run(["orbctl", "list", "-f", "json"]);
 	if (exitCode !== 0) {
 		throw new Error(`Failed to get current orbs: ${stderr}`);
 	}
-	const orbs: Orb[] = JSON.parse(stdout);
+	const listInfo: OrbRecord[] = JSON.parse(stdout);
+
 	const result: Record<string, Orb> = {};
-	for (const orb of orbs) {
-		result[orb.name] = orb;
+	for (const orb of listInfo) {
+		const { exitCode, stdout, stderr } = await run(["orbctl", "info", orb.name, "-f", "json"]);
+		if (exitCode !== 0) {
+			throw new Error(`Failed to get current orbs: ${stderr}`);
+		}
+		const orbInfo: Orb = JSON.parse(stdout);
+		result[orb.name] = orbInfo;
 	}
 	return result;
 }
@@ -157,4 +170,16 @@ export async function cloneOrb(source: string, destination: string, debug = fals
 	if (debug) {
 		console.log(stdout);
 	}
+}
+
+export function formatBytes(bytes: number, decimals = 1): string {
+	const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+	const sign = bytes < 0 ? "-" : "";
+	let value = Math.abs(bytes);
+	let i = 0;
+	while (i < units.length - 1 && Number(value.toFixed(decimals)) >= 1000) {
+		value /= 1000;
+		i++;
+	}
+	return `${sign}${parseFloat(value.toFixed(decimals))} ${units[i]}`;
 }
